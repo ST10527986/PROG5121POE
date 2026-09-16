@@ -93,3 +93,27 @@ public class main {
                 && user.checkCellPhoneNumber()) {
 
             System.out.println("\n--- LOGIN ---");
+            
+ // Captures the username entered during login.
+            System.out.print("Enter your username: ");
+            String loginUsername = input.nextLine();
+
+            // Captures the password entered during login.
+            System.out.print("Enter your password: ");
+            String loginPassword = input.nextLine();
+
+            // Checks whether the entered login details match
+            // the details used during registration.
+            boolean loginStatus = user.loginUser(
+                    loginUsername,
+                    loginPassword
+            );
+
+            // Displays the appropriate login status message.
+            System.out.println(user.returnLoginStatus(loginStatus));
+        }
+
+        // Closes the Scanner when the program is finished.
+        input.close();
+    }
+}
