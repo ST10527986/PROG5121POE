@@ -100,5 +100,31 @@ public boolean checkPasswordComplexity() {
 
             return "User registered successfully.";
         }
+        
+    }
+       // Compares the username and password entered during login
+    // with the details stored during registration.
+    public boolean loginUser(String enteredUsername, String enteredPassword) {
+
+        return enteredUsername.equals(username)
+                && enteredPassword.equals(password);
+    }
+
+    // Returns the appropriate message after the login attempt.
+    public String returnLoginStatus(boolean loginStatus) {
+
+        // Displays a welcome message if login was successful.
+        if (loginStatus) {
+
+            return "Welcome " + firstName + " " + lastName
+                    + ", it is great to see you again.";
+
+        // Displays an error message if login failed.
+        } else {
+
+            return "Username or password incorrect, please try again.";
+        }
     }
 }
+    
+    
