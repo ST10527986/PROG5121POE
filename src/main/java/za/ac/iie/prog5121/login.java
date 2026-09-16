@@ -19,4 +19,40 @@ public class login {
         this.firstName = firstName;
         this.lastName = lastName;
     }
+    // Checks if the username contains an underscore and is no more than 5 characters long.
+public boolean checkUserName() {
+    
+    return username.contains("_") && username.length() <= 5;
+}
+// Checks that the password has at least 8 characters,
+// a capital letter, a number, and a special character.
+public boolean checkPasswordComplexity() {
+
+    if (password.length() < 8) {
+        return false;
+    }
+
+    boolean hasCapitalLetter = false;
+    boolean hasNumber = false;
+    boolean hasSpecialCharacter = false;
+
+    for (int i = 0; i < password.length(); i++) {
+
+        char character = password.charAt(i);
+
+        if (Character.isUpperCase(character)) {
+            hasCapitalLetter = true;
+        }
+
+        if (Character.isDigit(character)) {
+            hasNumber = true;
+        }
+
+        if (!Character.isLetterOrDigit(character)) {
+            hasSpecialCharacter = true;
+        }
+    }
+
+    return hasCapitalLetter && hasNumber && hasSpecialCharacter;
+}
 }
