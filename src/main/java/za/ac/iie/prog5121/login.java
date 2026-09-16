@@ -55,4 +55,50 @@ public boolean checkPasswordComplexity() {
 
     return hasCapitalLetter && hasNumber && hasSpecialCharacter;
 }
+// Checks whether the cellphone number is in the required
+    // South African international format.
+    public boolean checkCellPhoneNumber() {
+
+        /*
+         * Regular expression:
+         * ^        = beginning of the number
+         * \\+27    = South African international code (+27)
+         * [0-9]    = allows numbers from 0 to 9
+         * {9}      = requires exactly 9 digits after +27
+         * $        = end of the number
+         */
+        String phoneRegex = "^\\+27[0-9]{9}$";
+
+        return cellPhoneNumber.matches(phoneRegex);
+    }
+    // Registers the user by checking all three required details.
+    public String registerUser() {
+
+        // Checks whether the username is valid.
+        if (!checkUserName()) {
+
+            return "Username is not correctly formatted; please ensure that "
+                    + "your username contains an underscore and is no more "
+                    + "than five characters in length.";
+
+        // Checks whether the password is valid.
+        } else if (!checkPasswordComplexity()) {
+
+            return "Password is not correctly formatted; please ensure that "
+                    + "the password contains at least eight characters, a "
+                    + "capital letter, a number, and a special character.";
+
+        // Checks whether the cellphone number is valid.
+        } else if (!checkCellPhoneNumber()) {
+
+            return "Cell number is incorrectly formatted or does not contain "
+                    + "an international code; please correct the number and "
+                    + "try again.";
+
+        // If all three details are valid, registration is successful.
+        } else {
+
+            return "User registered successfully.";
+        }
+    }
 }
