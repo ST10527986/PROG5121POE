@@ -67,6 +67,7 @@ public boolean checkPasswordComplexity() {
          * {9}      = requires exactly 9 digits after +27
          * $        = end of the number
          */
+         // Source: Oracle, Java SE Documentation, Pattern Class.
         String phoneRegex = "^\\+27[0-9]{9}$";
 
         return cellPhoneNumber.matches(phoneRegex);
