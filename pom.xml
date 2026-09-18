@@ -3,12 +3,12 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.mycompany</groupId>
     <artifactId>PROG5121POE</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>5.0.0</version>
     <packaging>jar</packaging>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.release>25</maven.compiler.release>
-        <exec.mainClass>com.mycompany.prog5121poe.PROG5121POE</exec.mainClass>
+        <exec.mainClass>com.mycompany.prog5121poe.PROG5121POE.main</exec.mainClass>
     </properties>
     <dependencies>
 <dependency>

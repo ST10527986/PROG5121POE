@@ -1,4 +1,4 @@
-package za.ac.iie.prog5121;
+package com.mycompany.prog5121poe;
 
 public class login {
 
