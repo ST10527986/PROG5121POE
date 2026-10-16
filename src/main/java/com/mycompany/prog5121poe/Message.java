@@ -111,5 +111,66 @@ public class Message {
         }
         return "Invalid option.";
     }
+    // Stores a JSON array without requiring a third-party JSON library.
+    // JSON string escaping is implemented below for quotes, slashes and control characters.
+    public void storeMessage() throws IOException {
+        String entry = "  {\"messageID\":\"" + jsonEscape(messageID)
+                + "\",\"messageHash\":\"" + jsonEscape(messageHash)
+                + "\",\"recipient\":\"" + jsonEscape(recipient)
+                + "\",\"message\":\"" + jsonEscape(messageText) + "\"}";
+        String old = Files.exists(JSON_FILE)
+                ? Files.readString(JSON_FILE, StandardCharsets.UTF_8).trim() : "[]";
+        if (!old.startsWith("[") || !old.endsWith("]")) {
+            throw new IOException("Stored JSON file has an invalid format.");
+        }
+        String contents = old.substring(1, old.length() - 1).trim();
+        String updated = contents.isEmpty() ? "[\n" + entry + "\n]"
+                : "[\n" + contents + ",\n" + entry + "\n]";
+        Files.writeString(JSON_FILE, updated, StandardCharsets.UTF_8,
+                StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
+    }
+
+    private static String jsonEscape(String value) {
+        StringBuilder out = new StringBuilder();
+        for (char c : value.toCharArray()) {
+            switch (c) {
+                case '"': out.append("\\\""); break;
+                case '\\': out.append("\\\\"); break;
+                case '\n': out.append("\\n"); break;
+                case '\r': out.append("\\r"); break;
+                case '\t': out.append("\\t"); break;
+                default:
+                    if (c < 0x20) out.append(String.format("\\u%04x", (int)c));
+                    else out.append(c);
+            }
+        }
+        return out.toString();
+    }
+
+    public static String printMessages() {
+        if (SENT_MESSAGES.isEmpty()) return "No messages have been sent.";
+        StringBuilder result = new StringBuilder();
+        for (Message m : SENT_MESSAGES) result.append(m.getDetails()).append("\n\n");
+        return result.toString().trim();
+    }
+
+    public static int returnTotalMessagess() {
+        return SENT_MESSAGES.size();
+    }
+
+    public static void resetSentMessagesForTesting() {
+        SENT_MESSAGES.clear();
+    }
+
+    public String getDetails() {
+        return "Message ID: " + messageID + "\nMessage Hash: " + messageHash
+                + "\nRecipient: " + recipient + "\nMessage: " + messageText;
+    }
+
+    public String getMessageID() { return messageID; }
+    public String getMessageHash() { return messageHash; }
+    public String getStatus() { return status; }
+}
+
 
     
