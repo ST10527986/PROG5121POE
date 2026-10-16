@@ -36,7 +36,7 @@ public class loginTest {
 
         assertFalse(user.checkUserName());
     }
-
+    
     // Tests whether a valid password is accepted.
     @Test
     public void testCheckPasswordValid() {
