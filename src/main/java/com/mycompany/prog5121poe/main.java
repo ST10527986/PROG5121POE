@@ -112,9 +112,85 @@ public class main {
 
             // Displays the appropriate login status message.
             System.out.println(user.returnLoginStatus(loginStatus));
+            
+            if (loginStatus) {
+                runQuickChat(input);
+            }
         }
 
         // Closes the Scanner when the program is finished.
         input.close();
+    }
+        private static void runQuickChat(Scanner input) {
+        System.out.println("\nWelcome to QuickChat.");
+        int limit = readNonNegativeInt(input, "How many messages would you like to enter? ");
+        int entered = 0;
+        int option = 0;
+        while (option != 3) {
+            System.out.println("\n1) Send Messages\n2) Show recently sent messages\n3) Quit");
+            option = readNonNegativeInt(input, "Choose an option: ");
+            switch (option) {
+                case 1:
+                    if (entered >= limit) {
+                        System.out.println("You have reached your message limit.");
+                        break;
+                    }
+                    for (int number = entered; number < limit; number++) {
+                        System.out.println("\n--- MESSAGE " + (number + 1) + " ---");
+                        System.out.print("Recipient (+27...): ");
+                        String recipient = input.nextLine();
+                        System.out.print("Message: ");
+                        String content = input.nextLine();
+                        Message message = new Message(number, recipient, content);
+                        System.out.println("Message ID generated: " + message.getMessageID());
+                        System.out.println(message.checkRecipientCell());
+                        System.out.println(message.checkMessageLength());
+                        if (!message.checkRecipientCell().equals("Cell phone number successfully captured.")
+                                || !message.checkMessageLength().equals("Message ready to send.")) {
+                            System.out.println("Please correct the message details.");
+                            number--;
+                            continue;
+                        }
+                        int action = readNonNegativeInt(input,
+                                "1) Send Message\n2) Disregard Message\n3) Store Message to send later\nChoose: ");
+                        while (action < 1 || action > 3) {
+                            action = readNonNegativeInt(input, "Choose 1, 2, or 3: ");
+                        }
+                        System.out.println(message.SentMessage(action));
+                        if (action == 2) {
+                            int confirmation = readNonNegativeInt(input, "Press 0 to delete the message: ");
+                            while (confirmation != 0) confirmation = readNonNegativeInt(input, "Press 0: ");
+                            System.out.println("Message disregarded.");
+                        } else if (action == 1) {
+                            System.out.println(message.getDetails());
+                            System.out.println("Message sent");
+                        }
+                        entered = number + 1;
+                    }
+                    System.out.println("Total messages sent: " + Message.returnTotalMessagess());
+                    break;
+                case 2:
+                    System.out.println("Coming Soon.");
+                    break;
+                case 3:
+                    System.out.println("Total messages sent: " + Message.returnTotalMessagess());
+                    System.out.println("Goodbye!");
+                    break;
+                default:
+                    System.out.println("Invalid option. Choose 1, 2 or 3.");
+            }
+        }
+    }
+
+    private static int readNonNegativeInt(Scanner input, String prompt) {
+        while (true) {
+            System.out.print(prompt);
+            String text = input.nextLine().trim();
+            try {
+                int value = Integer.parseInt(text);
+                if (value >= 0) return value;
+            } catch (NumberFormatException ignored) { }
+            System.out.println("Please enter a valid non-negative whole number.");
+        }
     }
 }
