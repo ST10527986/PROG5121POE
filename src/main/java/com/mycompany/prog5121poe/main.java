@@ -20,7 +20,7 @@ public class main {
 
         // Captures the username the user wants to register.
         System.out.print("Enter a username: ");
-        String username = input.nextLine();
+        String username = input.nextLine().trim();
 
         // Captures the password the user wants to register.
         System.out.print("Enter a password: ");
@@ -28,7 +28,7 @@ public class main {
 
         // Captures the user's South African cellphone number.
         System.out.print("Enter your South African cell phone number: ");
-        String cellPhoneNumber = input.nextLine();
+        String cellPhoneNumber = input.nextLine().trim();
         
  // Creates a Login object using the information provided.
         login user = new login(
@@ -38,9 +38,6 @@ public class main {
                 firstName,
                 lastName
         );
-        System.out.println("DEBUG username: [" + username + "]");
-System.out.println("DEBUG password: [" + password + "]");
-System.out.println("DEBUG cellphone: [" + cellPhoneNumber + "]");
 
 System.out.println("Username valid: " + user.checkUserName());
 System.out.println("Password valid: " + user.checkPasswordComplexity());
@@ -154,7 +151,6 @@ System.out.println("Cellphone valid: " + user.checkCellPhoneNumber());
                 }
                 System.out.print("Recipient (+27...): ");
                 String recipient = input.nextLine().trim();
-                System.out.println("DEBUG recipient: [" + recipient + "]");
                 System.out.print("Message: ");
                 String content = input.nextLine();
                 Message message = new Message(entered, recipient, content);
