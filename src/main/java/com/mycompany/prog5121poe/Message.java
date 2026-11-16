@@ -193,8 +193,9 @@ public class Message {
     }
 
     public static void resetSentMessagesForTesting() {
-        SENT_MESSAGES.clear();
-    }
+    SENT_MESSAGES.clear();
+    DISREGARDED_MESSAGES.clear();
+}
 
     public String getDetails() {
         return "Message ID: " + messageID + "\nMessage Hash: " + messageHash
