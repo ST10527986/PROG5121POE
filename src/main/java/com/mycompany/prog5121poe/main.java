@@ -182,8 +182,9 @@ public class main {
                     System.out.println("Total messages sent: " + Message.returnTotalMessagess());
                     break;
                 case 2:
-                    System.out.println("Coming Soon.");
-                    break;
+                   System.out.println("\n--- RECENTLY SENT MESSAGES ---");
+                   System.out.println(Message.printMessages());
+                 break;
                 case 3:
                     System.out.println("Total messages sent: " + Message.returnTotalMessagess());
                     System.out.println("Goodbye!");
