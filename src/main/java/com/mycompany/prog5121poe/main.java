@@ -166,27 +166,42 @@ public class main {
                     action = readNonNegativeInt(input, "Choose 1, 2, or 3: ");
                 }
 
-                if (action == 1) {
-                    System.out.println(message.SentMessage(1));
-                    report.addSent(message);
-                    System.out.println(message.getDetails());
-                    entered++;
-                } else if (action == 2) {
-                    int confirmation = readNonNegativeInt(input,
-                            "Press 0 to confirm disregarding the message: ");
-                    while (confirmation != 0) {
-                        confirmation = readNonNegativeInt(input, "Press 0 to confirm: ");
-                    }
-                    System.out.println(message.disregardMessage());
-                    report.addDisregarded(message);
-                    entered++;
-                } else {
-                    System.out.println(message.SentMessage(3));
-                    if ("Stored".equals(message.getStatus())) {
-                        report.addStored(message);
-                        entered++;
-                    }
-                }
+               if (action == 1) {
+               String result = message.SentMessage(1);
+                System.out.println(result);
+
+               if ("Sent".equals(message.getStatus())) {
+                report.addSent(message);
+               System.out.println(message.getDetails());
+               entered++;
+               }
+
+   } else if (action == 2) {
+
+    int confirmation = readNonNegativeInt(input,
+            "Press 0 to confirm disregarding the message: ");
+
+    while (confirmation != 0) {
+        confirmation = readNonNegativeInt(input, "Press 0 to confirm: ");
+    }
+
+    String result = message.disregardMessage();
+    System.out.println(result);
+
+    if ("Disregarded".equals(message.getStatus())) {
+        report.addDisregarded(message);
+        entered++;
+    }
+
+} else {
+
+    System.out.println(message.SentMessage(3));
+
+    if ("Stored".equals(message.getStatus())) {
+        report.addStored(message);
+        entered++;
+    }
+}
                 break;
 
             case 2:
