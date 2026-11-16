@@ -204,6 +204,11 @@ public class Message {
     public String getMessageID() { return messageID; }
     public String getMessageHash() { return messageHash; }
     public String getStatus() { return status; }
+    
+    public int getMessageNumber() {return messageNumber;}
+    public String getRecipient() {return recipient;}
+    public String getMessageText() {return messageText;}
+
 }
 
 
