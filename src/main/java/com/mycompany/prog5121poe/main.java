@@ -156,15 +156,27 @@ public class main {
                         while (action < 1 || action > 3) {
                             action = readNonNegativeInt(input, "Choose 1, 2, or 3: ");
                         }
-                        System.out.println(message.SentMessage(action));
-                        if (action == 2) {
-                            int confirmation = readNonNegativeInt(input, "Press 0 to delete the message: ");
-                            while (confirmation != 0) confirmation = readNonNegativeInt(input, "Press 0: ");
-                            System.out.println("Message disregarded.");
-                        } else if (action == 1) {
-                            System.out.println(message.getDetails());
-                            System.out.println("Message sent");
-                        }
+                       if (action == 2) {
+    System.out.println(message.SentMessage(action));
+
+    int confirmation = readNonNegativeInt(
+            input, "Press 0 to confirm disregarding the message: "
+    );
+
+    while (confirmation != 0) {
+        confirmation = readNonNegativeInt(input, "Press 0 to confirm: ");
+    }
+
+    System.out.println(message.disregardMessage());
+
+} else if (action == 1) {
+    System.out.println(message.SentMessage(action));
+    System.out.println(message.getDetails());
+    System.out.println("Message sent");
+
+} else if (action == 3) {
+    System.out.println(message.SentMessage(action));
+}
                         entered = number + 1;
                     }
                     System.out.println("Total messages sent: " + Message.returnTotalMessagess());

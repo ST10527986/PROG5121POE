@@ -18,6 +18,7 @@ import java.util.List;
 public class Message {
     private static final SecureRandom RANDOM = new SecureRandom();
     private static final List<Message> SENT_MESSAGES = new ArrayList<>();
+    private static final List<Message> DISREGARDED_MESSAGES = new ArrayList<>();
     private static final Path JSON_FILE = Paths.get("stored_messages.json");
 
     private final String messageID;
@@ -113,6 +114,22 @@ public class Message {
     }
     // Stores a JSON array without requiring a third-party JSON library.
     // JSON string escaping is implemented below for quotes, slashes and control characters.
+    public String disregardMessage() {
+
+    // Prevents a message that has already been sent or stored
+    // from being disregarded.
+    if ("Sent".equals(status) || "Stored".equals(status)) {
+        return "Message cannot be disregarded because it has already been processed.";
+    }
+
+    // Updates the message status and records it as disregarded.
+    if (!"Disregarded".equals(status)) {
+        status = "Disregarded";
+        DISREGARDED_MESSAGES.add(this);
+    }
+
+    return "Message successfully disregarded.";
+}
     public void storeMessage() throws IOException {
         String entry = "  {\"messageID\":\"" + jsonEscape(messageID)
                 + "\",\"messageHash\":\"" + jsonEscape(messageHash)
