@@ -38,6 +38,13 @@ public class main {
                 firstName,
                 lastName
         );
+        System.out.println("DEBUG username: [" + username + "]");
+System.out.println("DEBUG password: [" + password + "]");
+System.out.println("DEBUG cellphone: [" + cellPhoneNumber + "]");
+
+System.out.println("Username valid: " + user.checkUserName());
+System.out.println("Password valid: " + user.checkPasswordComplexity());
+System.out.println("Cellphone valid: " + user.checkCellPhoneNumber());
 
         // Checks whether the username is correctly formatted.
         if (user.checkUserName()) {
