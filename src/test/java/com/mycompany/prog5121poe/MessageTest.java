@@ -1,10 +1,16 @@
 
 package com.mycompany.prog5121poe;
 
+import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
 public class MessageTest {
+
+    @Before
+    public void setUp() {
+        Message.resetSentMessagesForTesting();
+    }
 
     // Creates a sample message for testing.
     private Message createTestMessage() {
@@ -137,6 +143,94 @@ public class MessageTest {
         assertEquals(
                 "Message successfully stored.",
                 message.SentMessage(3)
+        );
+    }
+
+    // Tests that recently sent messages are displayed.
+    @Test
+    public void testRecentlySentMessages() {
+        Message message = createTestMessage();
+
+        message.SentMessage(1);
+
+        String result = Message.printMessages();
+
+        assertTrue(result.contains(
+                "Hi Mike, can you join us for dinner tonight?"
+        ));
+        assertTrue(result.contains(message.getMessageID()));
+        assertTrue(result.contains(message.getMessageHash()));
+    }
+
+    // Tests that a message is actually disregarded.
+    @Test
+    public void testMessageActuallyDisregarded() {
+        Message message = createTestMessage();
+
+        message.SentMessage(2);
+
+        assertEquals(
+                "Message successfully disregarded.",
+                message.disregardMessage()
+        );
+
+        assertEquals("Disregarded", message.getStatus());
+        assertEquals(0, Message.returnTotalMessagess());
+
+        assertTrue(Message.printDisregardedMessages().contains(
+                "Hi Mike, can you join us for dinner tonight?"
+        ));
+    }
+
+    // Tests that disregarded messages cannot be sent or stored.
+    @Test
+    public void testDisregardedMessageCannotBeSentOrStored() {
+        Message message = createTestMessage();
+
+        message.disregardMessage();
+
+        assertEquals(
+                "A disregarded message cannot be sent or stored.",
+                message.SentMessage(1)
+        );
+
+        assertEquals(
+                "A disregarded message cannot be sent or stored.",
+                message.SentMessage(3)
+        );
+
+        assertEquals(0, Message.returnTotalMessagess());
+    }
+
+    // Tests message hashing when punctuation is present.
+    @Test
+    public void testMessageHashWithPunctuation() {
+        Message message = new Message(
+                "0012345678",
+                0,
+                "+27718693002",
+                "Hello, how are you today!"
+        );
+
+        assertEquals(
+                "00:0:HELLOTODAY",
+                message.createMessageHash()
+        );
+    }
+
+    // Tests message hashing with different text.
+    @Test
+    public void testMessageHashWithDifferentText() {
+        Message message = new Message(
+                "9912345678",
+                2,
+                "+27718693002",
+                "Please bring the documents, tomorrow."
+        );
+
+        assertEquals(
+                "99:2:PLEASETOMORROW",
+                message.createMessageHash()
         );
     }
 }

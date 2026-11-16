@@ -83,6 +83,9 @@ public class Message {
     }
 
     public String SentMessage(int choice) {
+        if ("Disregarded".equals(status)) {
+    return "A disregarded message cannot be sent or stored.";
+}
         if (choice == 1) {
             if (!checkMessageID() || !checkMessageLength().equals("Message ready to send.")
                     || !checkRecipientCell().equals("Cell phone number successfully captured.")) {
@@ -170,6 +173,20 @@ public class Message {
         for (Message m : SENT_MESSAGES) result.append(m.getDetails()).append("\n\n");
         return result.toString().trim();
     }
+    public static String printDisregardedMessages() {
+
+    if (DISREGARDED_MESSAGES.isEmpty()) {
+        return "No messages have been disregarded.";
+    }
+
+    StringBuilder result = new StringBuilder();
+
+    for (Message message : DISREGARDED_MESSAGES) {
+        result.append(message.getDetails()).append("\n\n");
+    }
+
+    return result.toString().trim();
+}
 
     public static int returnTotalMessagess() {
         return SENT_MESSAGES.size();
