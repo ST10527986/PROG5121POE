@@ -147,6 +147,7 @@ public class main {
                 }
                 System.out.print("Recipient (+27...): ");
                 String recipient = input.nextLine().trim();
+                System.out.println("DEBUG recipient: [" + recipient + "]");
                 System.out.print("Message: ");
                 String content = input.nextLine();
                 Message message = new Message(entered, recipient, content);
