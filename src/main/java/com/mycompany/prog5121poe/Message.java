@@ -5,11 +5,6 @@
 package com.mycompany.prog5121poe;
 
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardOpenOption;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +14,7 @@ public class Message {
     private static final SecureRandom RANDOM = new SecureRandom();
     private static final List<Message> SENT_MESSAGES = new ArrayList<>();
     private static final List<Message> DISREGARDED_MESSAGES = new ArrayList<>();
-    private static final Path JSON_FILE = Paths.get("stored_messages.json");
+   
 
     private final String messageID;
     private final int messageNumber;
@@ -86,6 +81,13 @@ public class Message {
         if ("Disregarded".equals(status)) {
     return "A disregarded message cannot be sent or stored.";
 }
+        if ("Stored".equals(status) && choice == 1) {
+    return "A stored message cannot be sent.";
+}
+
+if ("Sent".equals(status) && choice == 3) {
+    return "A sent message cannot be stored.";
+}
         if (choice == 1) {
             if (!checkMessageID() || !checkMessageLength().equals("Message ready to send.")
                     || !checkRecipientCell().equals("Cell phone number successfully captured.")) {
@@ -106,17 +108,15 @@ public class Message {
                 return "Message cannot be stored because its details are invalid.";
             }
             try {
-                storeMessage();
-                status = "Stored";
-                return "Message successfully stored.";
-            } catch (IOException e) {
-                return "Unable to store message: " + e.getMessage();
-            }
+    MessageStore.storeMessage(this);
+    status = "Stored";
+    return "Message successfully stored.";
+} catch (IOException e) {
+    return "Unable to store message: " + e.getMessage();
+}
         }
         return "Invalid option.";
     }
-    // Stores a JSON array without requiring a third-party JSON library.
-    // JSON string escaping is implemented below for quotes, slashes and control characters.
     public String disregardMessage() {
 
     // Prevents a message that has already been sent or stored
@@ -124,6 +124,7 @@ public class Message {
     if ("Sent".equals(status) || "Stored".equals(status)) {
         return "Message cannot be disregarded because it has already been processed.";
     }
+    
 
     // Updates the message status and records it as disregarded.
     if (!"Disregarded".equals(status)) {
@@ -133,39 +134,7 @@ public class Message {
 
     return "Message successfully disregarded.";
 }
-    public void storeMessage() throws IOException {
-        String entry = "  {\"messageID\":\"" + jsonEscape(messageID)
-                + "\",\"messageHash\":\"" + jsonEscape(messageHash)
-                + "\",\"recipient\":\"" + jsonEscape(recipient)
-                + "\",\"message\":\"" + jsonEscape(messageText) + "\"}";
-        String old = Files.exists(JSON_FILE)
-                ? Files.readString(JSON_FILE, StandardCharsets.UTF_8).trim() : "[]";
-        if (!old.startsWith("[") || !old.endsWith("]")) {
-            throw new IOException("Stored JSON file has an invalid format.");
-        }
-        String contents = old.substring(1, old.length() - 1).trim();
-        String updated = contents.isEmpty() ? "[\n" + entry + "\n]"
-                : "[\n" + contents + ",\n" + entry + "\n]";
-        Files.writeString(JSON_FILE, updated, StandardCharsets.UTF_8,
-                StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
-    }
-
-    private static String jsonEscape(String value) {
-        StringBuilder out = new StringBuilder();
-        for (char c : value.toCharArray()) {
-            switch (c) {
-                case '"': out.append("\\\""); break;
-                case '\\': out.append("\\\\"); break;
-                case '\n': out.append("\\n"); break;
-                case '\r': out.append("\\r"); break;
-                case '\t': out.append("\\t"); break;
-                default:
-                    if (c < 0x20) out.append(String.format("\\u%04x", (int)c));
-                    else out.append(c);
-            }
-        }
-        return out.toString();
-    }
+    
 
     public static String printMessages() {
         if (SENT_MESSAGES.isEmpty()) return "No messages have been sent.";
@@ -205,6 +174,10 @@ public class Message {
     public String getMessageID() { return messageID; }
     public String getMessageHash() { return messageHash; }
     public String getStatus() { return status; }
+    
+    public void markAsStored() {
+    status = "Stored";
+}
     
     public int getMessageNumber() {return messageNumber;}
     public String getRecipient() {return recipient;}

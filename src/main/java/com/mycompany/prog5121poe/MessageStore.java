@@ -24,10 +24,11 @@ public final class MessageStore {
             Message message = messages[i];
             if (i > 0) json.append(",\n");
             json.append("  {\"messageID\":\"").append(escape(message.getMessageID()))
-                .append("\",\"messageNumber\":").append(message.getMessageNumber())
-                .append(",\"messageHash\":\"").append(escape(message.getMessageHash()))
-                .append("\",\"recipient\":\"").append(escape(message.getRecipient()))
-                .append("\",\"message\":\"").append(escape(message.getMessageText())).append("\"}");
+               .append("\",\"messageNumber\":").append(message.getMessageNumber())
+               .append(",\"messageHash\":\"").append(escape(message.getMessageHash()))
+               .append("\",\"recipient\":\"").append(escape(message.getRecipient()))
+               .append("\",\"message\":\"").append(escape(message.getMessageText()))
+               .append("\",\"status\":\"Stored\"}");
         }
         json.append("\n]\n");
         Files.writeString(path, json, StandardCharsets.UTF_8);
@@ -163,7 +164,9 @@ public final class MessageStore {
                 try { if (fields.containsKey("messageNumber")) number = Integer.parseInt(fields.get("messageNumber")); }
                 catch (NumberFormatException ex) { throw new IOException("Invalid message number.", ex); }
 
-                messages.add(new Message(id, number, recipient, body));
+                Message message = new Message(id, number, recipient, body);
+                message.markAsStored();
+                messages.add(message);
             } while (take(','));
             expect(']');
 
